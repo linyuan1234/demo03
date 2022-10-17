@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class IndexController {
 /*
-* 来登录页
+* 登录页面
 * */
     @GetMapping(value = {"/","/login"})
     public String loginPage(){
@@ -35,26 +35,28 @@ public class IndexController {
     //重新回到main页面/index页面
     @GetMapping("/index")
     public String main2( HttpSession session, Model model) {
-        Object loginUser = session.getAttribute("loginUser");
-        if (loginUser != null) {
+        //Object loginUser = session.getAttribute("loginUser");
+       /* if (loginUser != null) {
                 return "redirect:/main";
             } else {
                 model.addAttribute("msg", "请重新登录！");
                 return "login";
-            }
-
+            }*/
+        return "redirect:/main";
 
 
     }
     @GetMapping("/main")
     public String mainPage(HttpSession session,Model model){
         //是否登录   拦截器 过滤器
-        Object loginUser = session.getAttribute("loginUser");
+       /* Object loginUser = session.getAttribute("loginUser");
         if (loginUser!=null){
             return "index";
         }else {
             model.addAttribute("msg","请重新登录");
             return "login";
-        }
+        }*/
+      //  log.info("执行的方法是{}","mainPage");
+        return "index";
     }
 }

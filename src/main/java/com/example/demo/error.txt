@@ -1,0 +1,23 @@
+异常处理自动配置原理
+ErrorMvcAutoConfiguration自动配置异常处理规则
+
+容器中的组件:类型: DefaultErrorAttributes-->id: errorAttributes
+   public class DefaultErrorAttributes implements ErrorAttributes, HandlerExceptionResolver
+    定义错误页面中，能包含哪些属性
+   容器中的组件: 类型:BasicErrorController-->id: basicErrorController(json+白页)
+   默认处理/error路径的请求;页面响应new ModelAndView("error", model);
+   容器中有组件view->id是error;(响应默认错误页)
+   容器中放组件 BeanNameViewResolver(视图解析器);按照返回的视图名，作为组件的id去容器中找view对象
+   容器中的组件DefaultErrorViewResolver
+    如果发生错误，会以http状态码作为视图页地址找到真正的页面
+    error/404,5xx.html
+如果想要返回页面，就会找error视图。[StaticView](默认是一个白页)
+
+
+异常处理步骤流程
+1.执行目标方法，目标方法运行期间有任何异常都会被catch而且标志当前请求结束  并且用dispatchException封装
+2.进入视图解析流程(页面渲染)processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
+3.mv=processHandlerException处理handler发生的异常,处理完成返回ModelAndView
+   1.遍历所有的handlerExceptionResolvers,看谁能处理当前异常[遍历所有的handlerExceptionResolver]
+   2.系统默认的异常解析器
+     1.DefaultErrorAttributes先来处理异常,把异常信息保存到request域，并且返回null

@@ -15,6 +15,8 @@ public class TableController {
     @GetMapping("/basic_table")
     public String basic_table(){
 
+        int i=10;
+        i=i/0;
         return "table/basic_table";
     }
     @GetMapping("/dynamic_table")
