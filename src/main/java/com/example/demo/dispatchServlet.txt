@@ -1,0 +1,18 @@
+/*
+* 扩展: DispatchServlet如何注册进来
+* 容器中自动配置了DispatchServlet 属性绑定到WebMvcProperties对应的配置文件是spring.mvc
+* 通过ServletRegistrationBean<DispatchServlet> 把DispatcherServlet 配置进来
+   默认映射的是/路径
+* */
+
+
+springboot应用启动发现当前是web应用，web场景包-导入tomcat
+web应用会创建一个web版的ioc容器ServletWebServerApplicationContext
+ServletWebServerApplicationContext启动的时候寻找ServletWebServerFaction(Servlet 的web服务器工厂--->Servlet的web服务器)
+底层直接会有一个自动配置类ServletWebServerFactoryAutoConfiguration
+ServletWebServerFactoryAutoConfiguration导入了ServletWebServerFactoryConfiguration(配置类)
+ServletWebServerFactoryConfiguration 配置类 根据动态判断系统中到底导入了哪个web服务器的包   默认web-starter导入tomcat的包
+TomcatServletWebServerFactory 创建出Tomcat 服务器并启动,tomcatWebServer的构造器拥有初始化方法
+内嵌服务器，就是手动把启动服务器的代码调用(Tomcat核心jar包存在)
+
+定制化原理

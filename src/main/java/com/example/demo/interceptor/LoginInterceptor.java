@@ -51,7 +51,4 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
-
-
-
 }
