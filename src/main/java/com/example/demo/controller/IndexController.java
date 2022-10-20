@@ -1,16 +1,41 @@
 package com.example.demo.controller;
 
+import com.example.demo.pojo.Account;
 import com.example.demo.pojo.User;
+import com.example.demo.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
 import javax.servlet.http.HttpSession;
 
 
 @Controller
 public class IndexController {
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+    @Autowired
+    AccountService accountService;
+@GetMapping("/acct")
+@ResponseBody
+    public Account getById(@RequestParam("id") Integer id){
+
+        return accountService.getAcctByid(id);
+    }
+
+    @GetMapping("/sql")
+    @ResponseBody
+    public String queryFromDb(){
+        Integer integer = jdbcTemplate.queryForObject("select count(*) from user", Integer.class);
+
+
+        return  integer.toString();
+    }
 /*
 * 登录页面
 * */
